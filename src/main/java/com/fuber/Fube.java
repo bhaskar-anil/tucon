@@ -40,6 +40,17 @@ public class Fube {
 	
 	@Column(name="cartype")
 	private CarType carType;
+	
+	@Column(name="status")
+	private Status status;
+
+	public Fube(String identity, Location location, CarType carType, Status status) {
+		super();
+		this.identity = identity;
+		this.location = location;
+		this.carType = carType;
+		this.status = status;
+	}
 
 	public Long getId() {
 		return id;
@@ -71,6 +82,14 @@ public class Fube {
 
 	public void setCarType(CarType carType) {
 		this.carType = carType;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}	
 
 }
