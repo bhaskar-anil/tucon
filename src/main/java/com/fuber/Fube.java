@@ -118,7 +118,7 @@ public class Fube {
 	}
 
 	public boolean isNearThan(Fube nearestCab) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
