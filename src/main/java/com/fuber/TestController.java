@@ -16,22 +16,36 @@ public class TestController {
 	@Autowired
 	protected LocationService locationService;
 	
-	//Location loc = new Locat
+	//lets add some available cabs to start with
+	Fube[] availabeCabsToStartWith =	{
+			new Fube("KA03MZ7010", new Location(new Double(2),new Double(3)), CarType.LIMO, Status.SEEKING),
+			new Fube("KA03MZ7011", new Location(new Double(8),new Double(2)), CarType.LIMO, Status.SEEKING),
+			new Fube("KA03MZ7012", new Location(new Double(4),new Double(9)), CarType.LIMO, Status.SEEKING),
+			new Fube("KA03MZ7013", new Location(new Double(5),new Double(7)), CarType.LIMO, Status.SEEKING),
+			new Fube("KA03MZ7014", new Location(new Double(3),new Double(6)), CarType.LIMO, Status.SEEKING),
+			new Fube("KA03MZ7015", new Location(new Double(2),new Double(3)), CarType.LIMO, Status.SEEKING),
+			new Fube("KA03MZ7016", new Location(new Double(2),new Double(3)), CarType.LIMO, Status.SEEKING),
+			new Fube("KA03MZ7017", new Location(new Double(2),new Double(3)), CarType.LIMO, Status.SEEKING),
+			new Fube("KA03MZ7018", new Location(new Double(2),new Double(3)), CarType.LIMO, Status.SEEKING)
+	};
 	
-	Fube fube =	new Fube("KA03MZ7010", new Location(new Double(2),new Double(3)), CarType.LIMO, Status.SEEKING);
-
+	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String home(Model model){
-		fubeService.saveFube(fube);
-		model.addAttribute("fubes", fubeService.getAllFubes());
+		for(Fube availabeCab : availabeCabsToStartWith){
+			fubeService.saveFube(availabeCab);
+		}		
+		model.addAttribute("cabs", fubeService.getAllCabs("CAB"));
 		return "index";
 	}
 	
-	@RequestMapping(value="/cabs", method=RequestMethod.GET)
-	public String availabeCabs(){
-		
-		System.out.println(fubeService.getAllFubes().size());
-		return "index.html";
+	//a new customer comes to book a cab
+	Fube aNewCustomerComes = new Fube("9620856017", new Location(new Double(6),new Double(8)), null, Status.SEEKING);
+	
+	@RequestMapping(value="/book", method=RequestMethod.GET)
+	public String bookCab(Model model){
+		model.addAttribute("cab", fubeService.findNearestAvailabeCab(aNewCustomerComes));
+		return "cab";
 	}
 
 }
