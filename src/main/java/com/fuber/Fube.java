@@ -58,7 +58,7 @@ public class Fube {
 		this.location = location;
 		this.carType = carType;
 		this.status = status;
-		if (Character.isDigit(this.getIdentity().charAt(0))) {
+		if (Character.isDigit(identity.charAt(1))) {
 			this.fubeType = "CUSTOMER";
 		}else{
 			this.fubeType = "CAB";
@@ -117,9 +117,31 @@ public class Fube {
 		}		
 	}
 
-	public boolean isNearThan(Fube nearestCab) {
+	public boolean isNearThan(Fube nearestCab, Fube cab) {
+		
+		//check if cab is nearer than the nearest cab
+		if(this.distance(nearestCab) < this.distance(cab)){
+			return true;
+		}
 		
 		return false;
+	}
+	
+	public Double distance(Fube cab){
+		
+		Double sqrt = Math.sqrt(((this.getLocation().getLatitute() - cab.getLocation().getLatitute())*(this.getLocation().getLatitute() - cab.getLocation().getLatitute()))
+				+	((this.getLocation().getLongitude() - cab.getLocation().getLongitude())*(this.getLocation().getLongitude() - cab.getLocation().getLongitude())));
+		
+		System.out.println("sqrt is : "+ sqrt);
+		return 	sqrt;
+		
+		//return null;
+	}
+
+	@Override
+	public String toString() {
+		return "Fube [id=" + id + ", identity=" + identity + ", location=" + location + ", carType=" + carType
+				+ ", status=" + status + ", fubeType=" + fubeType + "]";
 	}
 
 }

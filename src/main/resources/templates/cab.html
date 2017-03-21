@@ -7,8 +7,8 @@
 <body>
 
 <table>
-<tr><td>all cabs</td></tr>
-<tr th:each = "cab : ${cabs}">
+<tr><td>this is the nearest available cab</td></tr>
+<tr>
 <td th:text="${cab.identity}"></td>
 <td th:text="${cab.carType}"></td>
 <td th:text="${cab.status}"></td>

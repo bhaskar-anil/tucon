@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fuber.Fube;
+import com.fuber.Status;
 import com.fuber.repository.FubeRepository;
 
 @Service
 @Transactional
-public class FubeService implements FubeServiceInterface{
-	
+public class FubeService implements FubeServiceInterface {
+
 	@Autowired
 	protected FubeRepository fubeRepository;
 
@@ -33,44 +34,44 @@ public class FubeService implements FubeServiceInterface{
 		// TODO Auto-generated method stub
 		return fubeRepository.save(fube);
 	}
-	
-	public List<Fube> getAllCabs(String fubeType){
+
+	public List<Fube> getAllCabs(String fubeType) {
 		return fubeRepository.findByFubeType(fubeType);
 	}
-	
-	public List<Fube> getAllAvailableCabs(String fubeType, String status){
+
+	public List<Fube> getAllAvailableCabs(String fubeType, Status status) {
 		return fubeRepository.findByFubeTypeAndStatus(fubeType, status);
 	}
-	
-	public Fube findNearestAvailabeCab(Fube customer){
+
+	public Fube findNearestAvailabeCab(Fube customer) {
 		Fube nearestCab = null;
-		
-		//get all available cabs for the carType
-		if(customer.getCarType() != null) {
-			List<Fube> availableCabs = fubeRepository.findByFubeTypeAndStatusAndCarType("CAB","SEEKING", customer.getCarType().toString());
-			for(Fube cab : availableCabs){
-				if(nearestCab != null && cab.isNearThan(nearestCab)){
+
+		// get all available cabs for the carType
+		if (customer.getCarType() != null) {
+			List<Fube> availableCabs = fubeRepository.findByFubeTypeAndStatusAndCarType("CAB", customer.getStatus(),
+					customer.getCarType());
+			for (Fube cab : availableCabs) {
+				if (nearestCab == null) {
+					nearestCab = cab;
+				} else if (customer.isNearThan(nearestCab, cab)) {
 					nearestCab = cab;
 				}
 			}
-			if(nearestCab != null){
-				return nearestCab;
-			}
-			return null;
-		}else{
-		
-		//get all available cabs- (if there is no preference by the customer)
-		List<Fube> availableCabs = fubeRepository.findByFubeTypeAndStatus("CAB","SEEKING");
-		
-			for(Fube cab : availableCabs){
-				if(nearestCab != null && cab.isNearThan(nearestCab)){
+			return nearestCab;
+		} else {
+
+			// get all available cabs- (if there is no preference by the
+			// customer)
+			List<Fube> availableCabs = fubeRepository.findByFubeTypeAndStatus("CAB", customer.getStatus());
+
+			for (Fube cab : availableCabs) {
+				if (nearestCab == null) {
+					nearestCab = cab;
+				} else if (customer.isNearThan(nearestCab, cab)) {
 					nearestCab = cab;
 				}
 			}
-			if(nearestCab != null){
-				return nearestCab;
-			}
-			return null;			
+			return nearestCab;
 		}
 	}
 
