@@ -23,26 +23,34 @@ import javax.persistence.Table;
  * */
 
 @Entity
-@Table(name="FUBE")
+@Table(name = "FUBE")
 public class Fube {
-	
+
 	@Id
-	@Column(name="fubeid")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "fubeid")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@Column(name="identity")
+
+	@Column(name = "identity")
 	private String identity;
-	
-	@OneToOne(cascade=CascadeType.REFRESH)
-	@JoinColumn(name="location")
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "location")
 	private Location location;
-	
-	@Column(name="cartype")
+
+	@Column(name = "cartype")
 	private CarType carType;
-	
-	@Column(name="status")
+
+	@Column(name = "status")
 	private Status status;
+
+	@Column(name = "fubeType")
+	private String fubeType;
+
+	public Fube() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public Fube(String identity, Location location, CarType carType, Status status) {
 		super();
@@ -50,6 +58,11 @@ public class Fube {
 		this.location = location;
 		this.carType = carType;
 		this.status = status;
+		if (Character.isDigit(this.getIdentity().charAt(0))) {
+			this.fubeType = "CUSTOMER";
+		}else{
+			this.fubeType = "CAB";
+		}
 	}
 
 	public Long getId() {
@@ -90,6 +103,18 @@ public class Fube {
 
 	public void setStatus(Status status) {
 		this.status = status;
-	}	
+	}
+
+	public String getFubeType() {
+		return fubeType;
+	}
+
+	public void setFubeType() {
+		if (Character.isDigit(this.getIdentity().charAt(0))) {
+			this.fubeType = "CUSTOMER";
+		}else{
+			this.fubeType = "CAB";
+		}		
+	}
 
 }

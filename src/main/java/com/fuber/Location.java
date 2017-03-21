@@ -26,6 +26,17 @@ public class Location {
 	@OneToOne(mappedBy="location")
 	private Fube fube;
 
+	public Location() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Location(Double latitute, Double longitude) {
+		super();
+		this.latitute = latitute;
+		this.longitude = longitude;
+	}
+
 	public Long getGeoid() {
 		return geoid;
 	}
